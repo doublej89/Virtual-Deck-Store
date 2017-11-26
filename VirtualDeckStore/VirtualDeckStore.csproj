@@ -50,8 +50,15 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net, Version=11.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.11.7.1\lib\net45\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -113,9 +120,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -190,20 +194,92 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\StoreFrontController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709161718257_Initial.cs" />
+    <Compile Include="Migrations\201709161718257_Initial.Designer.cs">
+      <DependentUpon>201709161718257_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709161720187_AddCategoriesProducts.cs" />
+    <Compile Include="Migrations\201709161720187_AddCategoriesProducts.Designer.cs">
+      <DependentUpon>201709161720187_AddCategoriesProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709171046542_DeletingData.cs" />
+    <Compile Include="Migrations\201709171046542_DeletingData.Designer.cs">
+      <DependentUpon>201709171046542_DeletingData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709171048577_AddingNewData.cs" />
+    <Compile Include="Migrations\201709171048577_AddingNewData.Designer.cs">
+      <DependentUpon>201709171048577_AddingNewData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CustomerOrder.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OrderedProduct.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ShoppingCartRemoveViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\adventure.jpg" />
+    <Content Include="Content\Images\bakery.png" />
+    <Content Include="Content\Images\bakeryicon.png" />
+    <Content Include="Content\Images\dairy.png" />
+    <Content Include="Content\Images\dairyicon.png" />
+    <Content Include="Content\Images\fruitandveg.png" />
+    <Content Include="Content\Images\fruiticon.png" />
+    <Content Include="Content\Images\meat.png" />
+    <Content Include="Content\Images\meaticon.png" />
+    <Content Include="Content\Images\CivilizationVI.jpg" />
+    <Content Include="Content\Images\DarkSouls.jpg" />
+    <Content Include="Content\Images\DirtRally.jpg" />
+    <Content Include="Content\Images\StarcraftII.jpg" />
+    <Content Include="Content\Images\Products\Broccoli.png" />
+    <Content Include="Content\Images\Products\Butter.png" />
+    <Content Include="Content\Images\Products\Cheese.png" />
+    <Content Include="Content\Images\Products\Chicken leg.png" />
+    <Content Include="Content\Images\Products\Chocolate cookies.png" />
+    <Content Include="Content\Images\Products\CivilizationVI.jpg" />
+    <Content Include="Content\Images\Products\Corn on the cob.png" />
+    <Content Include="Content\Images\Products\DarkSouls.jpg" />
+    <Content Include="Content\Images\Products\DirtRally.jpg" />
+    <Content Include="Content\Images\Products\Free range Eggs.png" />
+    <Content Include="Content\Images\Products\GranTurismoSport.jpg" />
+    <Content Include="Content\Images\Products\Milk.png" />
+    <Content Include="Content\Images\Products\Organic Meat Patties.png" />
+    <Content Include="Content\Images\Products\Parma ham.png" />
+    <Content Include="Content\Images\Products\Pumpkin seed bun.png" />
+    <Content Include="Content\Images\Products\Red currants.png" />
+    <Content Include="Content\Images\Products\Sausages.png" />
+    <Content Include="Content\Images\Products\Seedless watermelon.png" />
+    <Content Include="Content\Images\Products\Sesame seed bagel.png" />
+    <Content Include="Content\Images\Products\Starcraft II.jpg" />
+    <Content Include="Content\Images\Products\Sunflower seed loaf.png" />
+    <Content Include="Content\Images\Products\Syberia.jpg" />
+    <Content Include="Content\Images\Products\TheLastExpress.jpg" />
+    <Content Include="Content\Images\Products\Witcher3.jpg" />
+    <Content Include="Content\Images\racing.jpg" />
+    <Content Include="Content\Images\rpg.jpg" />
+    <Content Include="Content\Images\shoping_cart.png" />
+    <Content Include="Content\Images\strategy.jpg" />
+    <Content Include="Content\Js\ResponsiveSlider.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -213,6 +289,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\virtualdeckstore - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\virtualdeckstore - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -224,7 +302,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -258,6 +338,21 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Checkout\AddressAndPayment.cshtml" />
+    <Content Include="Views\Checkout\Complete.cshtml" />
+    <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\Products\Delete.cshtml" />
+    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\ShoppingCart\CartSummary.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\StoreFront\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -274,6 +369,20 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709161718257_Initial.resx">
+      <DependentUpon>201709161718257_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709161720187_AddCategoriesProducts.resx">
+      <DependentUpon>201709161720187_AddCategoriesProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709171046542_DeletingData.resx">
+      <DependentUpon>201709171046542_DeletingData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709171048577_AddingNewData.resx">
+      <DependentUpon>201709171048577_AddingNewData.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -28,6 +28,14 @@ namespace VirtualDeckStore.Controllers
             SignInManager = signInManager;
         }
 
+        private void MigrateShoppingCart(string userName)
+        {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
+            cart.MigrateCart(userName);
+            Session[ShoppingCart.CartSessionKey] = userName;
+        }
+
         public ApplicationSignInManager SignInManager
         {
             get
@@ -79,6 +87,7 @@ namespace VirtualDeckStore.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    MigrateShoppingCart(model.Email);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -155,6 +164,7 @@ namespace VirtualDeckStore.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    MigrateShoppingCart(model.Email);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -392,6 +402,8 @@ namespace VirtualDeckStore.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            cart.EmptyCart();
             return RedirectToAction("Index", "Home");
         }
 
