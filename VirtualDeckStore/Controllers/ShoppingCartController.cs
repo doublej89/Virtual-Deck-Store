@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stripe;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -59,6 +60,47 @@ namespace VirtualDeckStore.Controllers
             };
 
             return Json(results);
+        }
+
+        [HttpPost]
+        public ActionResult Charge(string stripeEmail, string stripeToken)
+        {
+            var order = new CustomerOrder();
+            var customers = new StripeCustomerService();
+            var charges = new StripeChargeService();
+
+            var customer = customers.Create(new StripeCustomerCreateOptions
+            {
+                Email = stripeEmail,
+                SourceToken = stripeToken
+            });
+
+            var charge = charges.Create(new StripeChargeCreateOptions
+            {
+                Amount = 500,
+                Description = "Sample Charge",
+                Currency = "usd",
+                CustomerId = customer.Id
+            });
+
+            return RedirectToAction("Complete", new { id = order.Id });
+        }
+
+        public ActionResult Complete(int id)
+        {
+            bool isValid = db.CustomerOrders.Any(
+                o => o.Id == id &&
+                     o.CustomerUserName == User.Identity.Name
+                );
+
+            if (isValid)
+            {
+                return View(id);
+            }
+            else
+            {
+                return View("Error");
+            }
         }
 
         [ChildActionOnly]

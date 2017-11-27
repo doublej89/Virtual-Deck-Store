@@ -71,13 +71,13 @@ else
     <p class="button">
         <a href="~/StoreFront/Index/1">Continue shopping>></a>
     </p>
-    <form action="/ShoppingCart/Charge" method="POST">
+    <form action="~/ShoppingCart/Charge" method="POST">
         <script src="//checkout.stripe.com/v2/checkout.js"
                 class="stripe-button"
                 data-key="@Model.PublishedKey"
                 data-locale="auto"
                 data-description="Game price"
-                data-amount=@Model.CartTotal.ToString("C",us)>
+                data-amount=@Model.CartTotal.ToString()>
         </script>
     </form>
 }
