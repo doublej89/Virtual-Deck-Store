@@ -40,26 +40,23 @@ namespace VirtualDeckStore.Controllers
 
             return RedirectToAction("Index");
         }
-
-        [HttpPost]
+       
         public ActionResult RemoveFromCart(int id)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            string productName = db.Carts.FirstOrDefault(item => item.ProductId == id).Product.Name;
+            //string productName = db.Carts.FirstOrDefault(item => item.ProductId == id).Product.Name;
 
             int itemCount = cart.RemoveFromCart(id);
 
-            var results = new ShoppingCartRemoveViewModel
+            var results = new ShoppingCartViewModel
             {
-                Message = Server.HtmlEncode(productName) + " has been removed from your shopping cart",
+                CartItems = cart.GetCartItems(),
                 CartTotal = cart.GetTotal(),
-                CartCount = cart.GetCount(),
-                ItemCount = itemCount,
-                DeleteId = id
+                PublishedKey = ConfigurationManager.AppSettings["stripePublishableKey"]
             };
 
-            return Json(results);
+            return View("Index", results);
         }
 
         [HttpPost]
@@ -69,6 +66,8 @@ namespace VirtualDeckStore.Controllers
             var customers = new StripeCustomerService();
             var charges = new StripeChargeService();
 
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
             var customer = customers.Create(new StripeCustomerCreateOptions
             {
                 Email = stripeEmail,
@@ -77,11 +76,21 @@ namespace VirtualDeckStore.Controllers
 
             var charge = charges.Create(new StripeChargeCreateOptions
             {
-                Amount = 500,
+                Amount = (int)(cart.GetTotal() * 100),
                 Description = "Sample Charge",
                 Currency = "usd",
                 CustomerId = customer.Id
             });
+
+            order.CustomerUserName = User.Identity.Name;
+            order.DateCreated = DateTime.Now;
+
+            db.CustomerOrders.Add(order);
+            db.SaveChanges();
+
+            cart.CreateOrder(order);
+
+            db.SaveChanges();
 
             return RedirectToAction("Complete", new { id = order.Id });
         }

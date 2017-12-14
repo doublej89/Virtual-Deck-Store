@@ -50,9 +50,7 @@ else
                     @((item.Product.Price*item.Count).ToString("c",us))
                 </td>
                 <td>
-                    <a href="" class="RemoveLink" data-id="@item.ProductId">
-                        Remove from cart
-                    </a>
+                    @Html.ActionLink("Remove from cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, null)            
                 </td>
             </tr>
         }
@@ -71,13 +69,14 @@ else
     <p class="button">
         <a href="~/StoreFront/Index/1">Continue shopping>></a>
     </p>
+    
     <form action="~/ShoppingCart/Charge" method="POST">
         <script src="//checkout.stripe.com/v2/checkout.js"
                 class="stripe-button"
                 data-key="@Model.PublishedKey"
                 data-locale="auto"
                 data-description="Game price"
-                data-amount=@Model.CartTotal.ToString()>
+                data-amount=@(((int)(Model.CartTotal * 100)).ToString())>
         </script>
     </form>
 }

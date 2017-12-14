@@ -120,7 +120,8 @@ namespace VirtualDeckStore.Models
                 {
                     ProductId = item.ProductId,
                     CustomerOrderId = customerOrder.Id,
-                    Quantity = item.Count
+                    Quantity = item.Count,
+                    CustomerIdentity = customerOrder.CustomerUserName
                 };
 
                 orderTotal += (item.Count*item.Product.Price);

@@ -17,6 +17,8 @@ namespace VirtualDeckStore.Models
 
         public int Quantity { get; set; }
 
+        public string CustomerIdentity { get; set; }
+
         public virtual Product Product { get; set; }
         public virtual CustomerOrder CustomerOrder { get; set; }
     }

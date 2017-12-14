@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201709171048577_AddingNewData.Designer.cs">
       <DependentUpon>201709171048577_AddingNewData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712121751069_StripeFinalized.cs" />
+    <Compile Include="Migrations\201712121751069_StripeFinalized.Designer.cs">
+      <DependentUpon>201712121751069_StripeFinalized.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Cart.cs" />
@@ -383,6 +387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709171048577_AddingNewData.resx">
       <DependentUpon>201709171048577_AddingNewData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712121751069_StripeFinalized.resx">
+      <DependentUpon>201712121751069_StripeFinalized.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
